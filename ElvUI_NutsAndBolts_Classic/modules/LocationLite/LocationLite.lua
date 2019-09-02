@@ -97,7 +97,7 @@ local function OnClick(self, btn)
 		end
 	end
 	if btn == "RightButton" then
-		E:ToggleConfig()
+		E:ToggleOptionsUI()
 	end
 end
 
@@ -121,25 +121,6 @@ local function CreateMainPanel()
 	loc_panel.Text:SetAllPoints()
 	loc_panel.Text:SetJustifyH("CENTER")
 	loc_panel.Text:SetJustifyV("MIDDLE")
-	
-	-- Hide in combat/Pet battle
-	loc_panel:SetScript("OnEvent",function(self, event)
-		if event == "PET_BATTLE_OPENING_START" then
-			UIFrameFadeOut(self, 0.2, self:GetAlpha(), 0)
-			self.fadeInfo.finishedFunc = PanelOnFade
-		elseif event == "PET_BATTLE_CLOSE" then
-			UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
-			self:Show()
-		elseif db.combatHide then
-			if event == "PLAYER_REGEN_DISABLED" then
-				UIFrameFadeOut(self, 0.2, self:GetAlpha(), 0)
-				self.fadeInfo.finishedFunc = PanelOnFade
-			elseif event == "PLAYER_REGEN_ENABLED" then
-				UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
-				self:Show()
-			end
-		end
-	end)
 
 	-- Mover
 	E:CreateMover(NB_LocationLitePanel, "NB_LocationLiteMover", L["Location Lite"])
@@ -443,8 +424,6 @@ function mod:Initialize()
 
 	NB_LocationLitePanel:RegisterEvent("PLAYER_REGEN_DISABLED")
 	NB_LocationLitePanel:RegisterEvent("PLAYER_REGEN_ENABLED")
-	NB_LocationLitePanel:RegisterEvent("PET_BATTLE_CLOSE")
-	NB_LocationLitePanel:RegisterEvent("PET_BATTLE_OPENING_START")
 
 	self.initialized = true
 end
