@@ -25,18 +25,6 @@ P["NutsAndBolts"]["DataBarColors"] = {
 			['hated'] = {r = 1, g = 0, b = 0, a = .8 },
 		},
 	},
-	['azerite'] = {
-		['color'] = {
-			['default'] = true,
-			['af'] = {r = .901, g = .8, b = .601, a = .8 },
-		},
-	},
-	['honor'] = {
-		['color'] = {
-			['default'] = true,
-			['hn'] = {r = .941, g = .447, b = .254, a = .8 },
-		},
-	},
 }
 
 local function ConfigTable()
@@ -144,59 +132,6 @@ local function ConfigTable()
 					},
 				},
 			},
-			azerite = {
-				order = 8,
-				type = 'group',
-				name = L['Azerite Bar'],
-				disabled = function() return not E.db.NutsAndBolts.DataBarColors.enable or not mod.initialized end,
-				args = {
-					color = {
-						order = 1,
-						type = 'group',
-						name = COLOR,
-						guiInline = true,
-						args = {
-							default = {
-								order = 1,
-								type = 'toggle',
-								name = DEFAULT,
-								width = 'full',
-								get = function(info) return E.db.NutsAndBolts.DataBarColors.azerite.color.default end,
-								set = function(info, value) E.db.NutsAndBolts.DataBarColors.azerite.color.default = value; mod:ChangeAzeriteColor(); end,
-							},
-							spacer = {
-								order = 2,
-								type = "header",
-								name = "",
-							},
-							af = {
-								order = 3,
-								type = 'color',
-								hasAlpha = true,
-								name = L['Azerite Bar'],
-								disabled = function() return E.db.NutsAndBolts.DataBarColors.azerite.color.default end,
-								get = function(info)
-									local t = E.db.NutsAndBolts.DataBarColors.azerite.color.af
-									local d = P.NutsAndBolts.DataBarColors.azerite.color.af
-									return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
-									end,
-								set = function(info, r, g, b, a)
-									E.db.NutsAndBolts.DataBarColors[ info[#info] ] = {}
-									local t = E.db.NutsAndBolts.DataBarColors.azerite.color.af
-									t.r, t.g, t.b, t.a = r, g, b, a
-									mod:ChangeAzeriteColor()
-								end,
-							},
-						},
-					},
-					elvuiOption = {
-						order = 2,
-						type = "execute",
-						name = L["ElvUI"].." "..L["Azerite Bar"],
-						func = function() LibStub("AceConfigDialog-3.0-ElvUI"):SelectGroup("ElvUI", "databars", "azerite") end,
-					},
-				},
-			},
 			reputation = {
 				order = 9,
 				type = 'group',
@@ -301,59 +236,6 @@ local function ConfigTable()
 						type = "execute",
 						name = L["ElvUI"].." "..REPUTATION,
 						func = function() LibStub("AceConfigDialog-3.0-ElvUI"):SelectGroup("ElvUI", "databars", "reputation") end,
-					},
-				},
-			},
-			honor = {
-				order = 10,
-				type = 'group',
-				name = HONOR,
-				disabled = function() return not E.db.NutsAndBolts.DataBarColors.enable or not mod.initialized end,
-				args = {
-					color = {
-						order = 1,
-						type = 'group',
-						name = COLOR,
-						guiInline = true,
-						args = {
-							default = {
-								order = 1,
-								type = 'toggle',
-								name = DEFAULT,
-								width = 'full',
-								get = function(info) return E.db.NutsAndBolts.DataBarColors.honor.color.default end,
-								set = function(info, value) E.db.NutsAndBolts.DataBarColors.honor.color.default = value; mod:ChangeHonorColor(); end,
-							},
-							spacer = {
-								order = 2,
-								type = "header",
-								name = "",
-							},
-							hn = {
-								order = 3,
-								type = 'color',
-								hasAlpha = true,
-								name = HONOR,
-								disabled = function() return E.db.NutsAndBolts.DataBarColors.honor.color.default end,
-								get = function(info)
-									local t = E.db.NutsAndBolts.DataBarColors.honor.color.hn
-									local d = P.NutsAndBolts.DataBarColors.honor.color.hn
-									return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
-									end,
-								set = function(info, r, g, b, a)
-									E.db.NutsAndBolts.DataBarColors[ info[#info] ] = {}
-									local t = E.db.NutsAndBolts.DataBarColors.honor.color.hn
-									t.r, t.g, t.b, t.a = r, g, b, a
-									mod:ChangeHonorColor()
-								end,
-							},
-						},
-					},
-					elvuiOption = {
-						order = 2,
-						type = "execute",
-						name = L["ElvUI"].." "..HONOR,
-						func = function() LibStub("AceConfigDialog-3.0-ElvUI"):SelectGroup("ElvUI", "databars", "honor") end,
 					},
 				},
 			},

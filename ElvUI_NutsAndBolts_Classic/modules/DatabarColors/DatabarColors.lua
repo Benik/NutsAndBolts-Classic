@@ -27,17 +27,6 @@ function mod:ChangeRepColor()
 	end
 end
 
-function mod:ChangeHonorColor()
-	local bar = ElvUI_HonorBar
-	local db = E.db.NutsAndBolts.DataBarColors.honor.color
-
-	if db.default then
-		bar.statusBar:SetStatusBarColor(0.941, 0.447, 0.254, 0.8)
-	else
-		bar.statusBar:SetStatusBarColor(ENB:unpackColor(db.hn))
-	end
-end
-
 function mod:ChangeXPcolor()
 	local db = E.db.NutsAndBolts.DataBarColors.experience.color
 	local elvxpstatus = ElvUI_ExperienceBar.statusBar
@@ -52,27 +41,12 @@ function mod:ChangeXPcolor()
 	end
 end
 
-function mod:ChangeAzeriteColor()
-	local bar = ElvUI_AzeriteBar
-	local db = E.db.NutsAndBolts.DataBarColors.azerite.color
-
-	if db.default then
-		bar.statusBar:SetStatusBarColor(.901, .8, .601, .8)
-	else
-		bar.statusBar:SetStatusBarColor(ENB:unpackColor(db.af))
-	end
-end
-
 function mod:Initialize()
-	self:ChangeAzeriteColor()
 	self:ChangeXPcolor()
-	self:ChangeHonorColor()
 	self:ChangeRepColor()
 
 	hooksecurefunc(M, 'UpdateReputation', mod.ChangeRepColor)
-	hooksecurefunc(M, 'UpdateHonor', mod.ChangeHonorColor)
 	hooksecurefunc(M, 'UpdateExperience', mod.ChangeXPcolor)
-	hooksecurefunc(M, 'UpdateAzerite', mod.ChangeAzeriteColor)
 	self.initialized = true
 end
 
