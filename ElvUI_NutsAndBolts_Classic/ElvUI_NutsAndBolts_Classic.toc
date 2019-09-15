@@ -1,6 +1,6 @@
 ## Interface: 11302
 ## Author: Benik
-## Version: 0.1
+## Version: 1.0
 ## Title: |cff1784d1ElvUI|r |cff00c0faNuts|r|cffffff00&|r|cff00c0faBolts|r|cffffff00 Classic|r
 ## Notes: Various ElvUI Enhancements
 ## RequiredDeps: ElvUI
@@ -10,4 +10,3 @@
 locales\load_locales.xml
 core.lua
 modules\load_modules.xml
-
