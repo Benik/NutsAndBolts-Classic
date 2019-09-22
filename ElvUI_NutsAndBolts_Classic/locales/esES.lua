@@ -1,6 +1,4 @@
-﻿local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
-local L = AceLocale:NewLocale("ElvUI", "esES") or AceLocale:NewLocale("ElvUI", "esES")
-if not L then return end
+﻿local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "esES")
 
 L["%s version %s by Benik"] = true
 L["%s is a collection of my plugins in Tukui.org / Twitch"] = true
@@ -62,10 +60,3 @@ L["It looks like ElvUI_DatatextColors addon is loaded. It is strongly suggested 
 -- BagsCountPosition
 L['Bags Count Position'] = true
 L["This module can move the Bag Item Count Position"] = true
-
--- ObjectiveTracker
-L['Objective Tracker'] = true
-L["This module can toggle Objective Tracker when in an instance"] = true
-L["Hide when in an instance"] = true
-L["Don't hide on Mythic+"] = true
-L["Don't hide when an achievement is tracked"] = true
