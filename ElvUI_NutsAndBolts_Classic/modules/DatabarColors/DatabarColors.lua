@@ -5,6 +5,8 @@ local mod = E:NewModule('NB_DataBarColors', 'AceHook-3.0');
 
 local FACTION_BAR_COLORS = FACTION_BAR_COLORS
 
+local classColor = E.myclass == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
+
 local backupColor = FACTION_BAR_COLORS[1]
 function mod:ChangeRepColor()
 	local db = E.db.NutsAndBolts.DataBarColors.reputation.color
@@ -41,12 +43,26 @@ function mod:ChangeXPcolor()
 	end
 end
 
+function mod:ChangePetColor()
+	local db = E.db.NutsAndBolts.DataBarColors.pet.color
+	local elvPetStatus = ElvUI_PetExperienceBar.statusBar
+
+	if db.default then
+		elvPetStatus:SetStatusBarColor(classColor.r, classColor.g, classColor.b, .8)
+	else
+		elvPetStatus:SetStatusBarColor(ENB:unpackColor(db.xp))
+	end
+end
+
 function mod:Initialize()
 	self:ChangeXPcolor()
 	self:ChangeRepColor()
+	self:ChangePetColor()
 
 	hooksecurefunc(M, 'UpdateReputation', mod.ChangeRepColor)
 	hooksecurefunc(M, 'UpdateExperience', mod.ChangeXPcolor)
+	hooksecurefunc(M, 'UpdatePetExperience', mod.ChangePetColor)
+
 	self.initialized = true
 end
 

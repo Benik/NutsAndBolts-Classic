@@ -6,6 +6,8 @@ local COMBAT_XP_GAIN, REPUTATION, ENABLE, COLOR, DEFAULT = COMBAT_XP_GAIN, REPUT
 local TUTORIAL_TITLE26, FACTION_STANDING_LABEL1, FACTION_STANDING_LABEL2 = TUTORIAL_TITLE26, FACTION_STANDING_LABEL1, FACTION_STANDING_LABEL2
 local FACTION_STANDING_LABEL3, FACTION_STANDING_LABEL4, FACTION_STANDING_LABEL5 = FACTION_STANDING_LABEL3, FACTION_STANDING_LABEL4, FACTION_STANDING_LABEL5
 
+local classColor = E.myclass == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
+
 -- Defaults
 P["NutsAndBolts"]["DataBarColors"] = {
 	['enable'] = false,
@@ -25,6 +27,12 @@ P["NutsAndBolts"]["DataBarColors"] = {
 			['hated'] = {r = 1, g = 0, b = 0, a = .8 },
 		},
 	},
+    ['pet'] = {
+        ['color'] = {
+            ['default'] = true,
+            ['xp'] = { r = classColor.r, g = classColor.g, b = classColor.b, a = .8 },
+        },
+    },
 }
 
 local function ConfigTable()
@@ -239,6 +247,58 @@ local function ConfigTable()
 					},
 				},
 			},
+            pet = {
+                order = 10,
+                type = 'group',
+                name = L['Pet XP Bar'],
+                disabled = function() return not E.db.NutsAndBolts.DataBarColors.enable or not mod.initialized end,
+                args = {
+                    color = {
+                        order = 1,
+                        type = 'group',
+                        name = COLOR,
+                        guiInline = true,
+                        args = {
+                            default = {
+                                order = 1,
+                                type = 'toggle',
+                                name = DEFAULT,
+                                get = function(info) return E.db.NutsAndBolts.DataBarColors.pet.color.default end,
+                                set = function(info, value) E.db.NutsAndBolts.DataBarColors.pet.color.default = value; mod:ChangePetColor(); end,
+                            },
+                            spacer = {
+                                order = 2,
+                                type = "header",
+                                name = "",
+                            },
+                            xp = {
+                                order = 3,
+                                type = 'color',
+                                hasAlpha = true,
+                                name = L["Pet Experience"],
+                                disabled = function() return E.db.NutsAndBolts.DataBarColors.pet.color.default end,
+                                get = function(info)
+                                    local t = E.db.NutsAndBolts.DataBarColors.pet.color.xp
+                                    local d = P.NutsAndBolts.DataBarColors.pet.color.xp
+                                    return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
+                                    end,
+                                set = function(info, r, g, b, a)
+                                    E.db.NutsAndBolts.DataBarColors[ info[#info] ] = {}
+                                    local t = E.db.NutsAndBolts.DataBarColors.pet.color.xp
+                                    t.r, t.g, t.b, t.a = r, g, b, a
+                                    mod:ChangePetColor()
+                                end,
+                            },
+                        },
+                    },
+                    elvuiOption = {
+                        order = 2,
+                        type = "execute",
+                        name = L["ElvUI"].." "..L["Pet Experience"],
+                        func = function() LibStub("AceConfigDialog-3.0-ElvUI"):SelectGroup("ElvUI", "databars", "petExperience") end,
+                    },
+                },
+            },
 		},
 	}
 end
