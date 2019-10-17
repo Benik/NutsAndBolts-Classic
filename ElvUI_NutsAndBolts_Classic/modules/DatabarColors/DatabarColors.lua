@@ -44,6 +44,7 @@ function mod:ChangeXPcolor()
 end
 
 function mod:ChangePetColor()
+    if E.myclass ~= 'HUNTER' then return end
 	local db = E.db.NutsAndBolts.DataBarColors.pet.color
 	local elvPetStatus = ElvUI_PetExperienceBar.statusBar
 
