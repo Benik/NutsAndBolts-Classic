@@ -1,2 +1,5 @@
+1.01
+*Add support for pet xp bar in DatabarColors module. Credit: thurin
+
 1.00
 *Initial release
