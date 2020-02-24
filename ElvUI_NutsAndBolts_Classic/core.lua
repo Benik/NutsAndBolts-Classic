@@ -35,6 +35,7 @@ function ENB:ConfigTable()
 		order = 400,
 		type = "group",
 		name = ENB.Title,
+		childGroups = "tab",
 		args = {
 			header1 = {
 				order = 1,
@@ -58,10 +59,9 @@ function ENB:ConfigTable()
 				name = "\n",
 			},
 			info = {
-				order = 5,
+				order = 1000,
 				type = "group",
 				name = L["Information / Help"],
-				guiInline = true,
 				args = {
 					description2 = {
 						order = 1,
@@ -94,17 +94,6 @@ function ENB:ConfigTable()
 				args = {
 					header1 = {
 						order = 1,
-						type = "header",
-						name = "",
-					},
-					logo = {
-						order = 2,
-						type = "description",
-						name = "",
-						image = function() return 'Interface\\AddOns\\ElvUI_NutsAndBolts_Classic\\media\\textures\\misc.tga', 512, 128 end,
-					},
-					header2 = {
-						order = 3,
 						type = "header",
 						name = "",
 					},
