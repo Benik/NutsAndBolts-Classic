@@ -70,17 +70,6 @@ local function ConfigTable()
 		name = L["Location Lite"],
 		childGroups = "tab",
 		args = {
-			header1 = {
-				order = 1,
-				type = "header",
-				name = "",
-			},
-			logo = {
-				order = 2,
-				type = "description",
-				name = "",
-				image = function() return 'Interface\\AddOns\\ElvUI_NutsAndBolts_Classic\\media\\textures\\locationlite.tga', 512, 128 end,
-			},
 			header2 = {
 				order = 3,
 				type = "header",
