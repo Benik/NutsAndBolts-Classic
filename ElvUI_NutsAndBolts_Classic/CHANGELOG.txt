@@ -1,3 +1,6 @@
+1.02
+*Fixed the options after the latest ElvUI chnages
+
 1.01
 *Add support for pet xp bar in DatabarColors module. Credit: thurin
 
