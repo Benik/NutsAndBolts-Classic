@@ -1,3 +1,6 @@
+1.03
+*Adopt ElvUI DataText changes
+
 1.02
 *Fixed the options after the latest ElvUI chnages
 
