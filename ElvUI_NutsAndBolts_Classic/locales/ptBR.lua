@@ -43,12 +43,15 @@ L["Update Timer"] = true
 L["Use Custom Location Color"] = true
 L["Zone and Subzone"] = true
 
+-- Databar Colors
+L['DataBar Colors'] = true
+L["This module can alter ElvUI Databar statusbars to any color"] = true
+
 -- ElvUI Panels
 L['ElvUI Panels'] = true
 L["This module can alter ElvUI Top and Bottom Panels Transparency and Height"] = true
 
 -- DataText Colors
-L['Covenant Color'] = true
 L['DataText Color'] = true
 L["Are you sure you want to disable ElvUI_DTColors?"] = true
 L["This module can alter all ElvUI DataText text color"] = true
@@ -57,11 +60,3 @@ L["It looks like ElvUI_DatatextColors addon is loaded. It is strongly suggested 
 -- BagsCountPosition
 L['Bags Count Position'] = true
 L["This module can move the Bag Item Count Position"] = true
-
--- ObjectiveTracker
-L['Objective Tracker'] = true
-L["This module can toggle Objective Tracker when in an instance"] = true
-L["Hide when in an instance"] = true
-L["Don't hide in Torghast"] = true
-L["Don't hide on Mythic+"] = true
-L["Don't hide when an achievement is tracked"] = true

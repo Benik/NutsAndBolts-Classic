@@ -21,7 +21,7 @@ local UNKNOWN = UNKNOWN
 -- GLOBALS: NB_LocationLitePanel, NB_XCoords, NB_YCoords
 
 local COORDS_WIDTH = 30 -- Coord panels width
-local classColor = E:ClassColor(E.myclass, true)
+local classColor = E.myclass == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
 
 -- Hide in combat, after fade function ends
 local function PanelOnFade()
@@ -34,7 +34,7 @@ local panels = {}
 local function AutoColoring()
 	local pvpType = GetZonePVPInfo()
 	local inInstance, _ = IsInInstance()
-	
+
 	if (pvpType == "sanctuary") then
 		return 0.41, 0.8, 0.94
 	elseif(pvpType == "arena") then
@@ -63,13 +63,13 @@ local function CreateCoords()
 	if mapPos then x, y = mapPos:GetXY() end
 
 	local dig
-	
+
 	if db.doubleDigit then
 		dig = 2
 	else
 		dig = 0
 	end
-	
+
 	x = (mapPos and x) and E:Round(100 * x, dig) or 0
 	y = (mapPos and y) and E:Round(100 * y, dig) or 0
 
@@ -79,7 +79,7 @@ end
 -- clicking the location panel
 local function OnClick(self, btn)
 	local zoneText = GetRealZoneText() or UNKNOWN;
-	if btn == "LeftButton" then	
+	if btn == "LeftButton" then
 		if IsShiftKeyDown() then
 			local edit_box = ChatEdit_ChooseBoxForSend()
 			local x, y = CreateCoords()
@@ -91,7 +91,7 @@ local function OnClick(self, btn)
 					message = format("%s (%s)", zoneText, coords)
 				end
 			ChatEdit_ActivateChat(edit_box)
-			edit_box:Insert(message) 
+			edit_box:Insert(message)
 		else
 			ToggleFrame(WorldMapFrame)
 		end
@@ -105,7 +105,7 @@ end
 local function CreateMainPanel()
 	local db = E.db.NutsAndBolts.LocationLite
 
-	local loc_panel = CreateFrame('Frame', 'NB_LocationLitePanel', E.UIParent, 'BackdropTemplate')
+	local loc_panel = CreateFrame('Frame', 'NB_LocationLitePanel', E.UIParent)
 	loc_panel:Width(db.width or 200)
 	loc_panel:Height(db.height or 21)
 	loc_panel:Point('TOP', E.UIParent, 'TOP', 0, -E.mult -22)
@@ -121,16 +121,11 @@ local function CreateMainPanel()
 	loc_panel.Text:SetAllPoints()
 	loc_panel.Text:SetJustifyH("CENTER")
 	loc_panel.Text:SetJustifyV("MIDDLE")
-	
-	-- Hide in combat/Pet battle
+
+
+	-- Hide in combat
 	loc_panel:SetScript("OnEvent",function(self, event)
-		if event == "PET_BATTLE_OPENING_START" then
-			UIFrameFadeOut(self, 0.2, self:GetAlpha(), 0)
-			self.fadeInfo.finishedFunc = PanelOnFade
-		elseif event == "PET_BATTLE_CLOSE" then
-			UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
-			self:Show()
-		elseif db.combatHide then
+		if db.combatHide then
 			if event == "PLAYER_REGEN_DISABLED" then
 				UIFrameFadeOut(self, 0.2, self:GetAlpha(), 0)
 				self.fadeInfo.finishedFunc = PanelOnFade
@@ -141,6 +136,7 @@ local function CreateMainPanel()
 		end
 	end)
 
+
 	-- Mover
 	E:CreateMover(NB_LocationLitePanel, "NB_LocationLiteMover", L["Location Lite"])
 end
@@ -150,7 +146,7 @@ local function CreateCoordPanels()
 	local db = E.db.NutsAndBolts.LocationLite
 
 	-- X Coord panel
-	local coordsX = CreateFrame('Frame', "NB_XCoords", NB_LocationLitePanel, 'BackdropTemplate')
+	local coordsX = CreateFrame('Frame', "NB_XCoords", NB_LocationLitePanel)
 	coordsX:Width(COORDS_WIDTH)
 	coordsX:Height(db.height or 21)
 	coordsX.Text = coordsX:CreateFontString(nil, "LOW")
@@ -160,7 +156,7 @@ local function CreateCoordPanels()
 	tinsert(panels, NB_XCoords)
 
 	-- Y Coord panel
-	local coordsY = CreateFrame('Frame', "NB_YCoords", NB_LocationLitePanel, 'BackdropTemplate')
+	local coordsY = CreateFrame('Frame', "NB_YCoords", NB_LocationLitePanel)
 	coordsY:Width(COORDS_WIDTH)
 	coordsY:Height(db.height or 21)
 	coordsY.Text = coordsY:CreateFontString(nil, "LOW")
@@ -168,7 +164,7 @@ local function CreateCoordPanels()
 	coordsY.Text:SetJustifyH("CENTER")
 	coordsY.Text:SetJustifyV("MIDDLE")
 	tinsert(panels, NB_YCoords)
-	
+
 	mod:ToggleCoordsColor()
 end
 
@@ -181,7 +177,7 @@ function mod:PanelsHeight()
 	else
 		NB_LocationLitePanel:Height(db.height)
 	end
-	
+
 	NB_XCoords:Height(db.height)
 	NB_YCoords:Height(db.height)
 end
@@ -192,14 +188,14 @@ function mod:CoordPanelFont()
 
 	for _, frame in pairs(panels) do
 		frame.Text:SetFont(LSM:Fetch("font", db.font), db.fontSize, db.fontFlags)
-	end	
+	end
 
 end
 
 -- Toggle transparency
 function mod:ToggleTransparency()
 	local db = E.db.NutsAndBolts.LocationLite
-	
+
 	for _, frame in pairs(panels) do
 		frame:SetTemplate('NoBackdrop')
 		if not db.noBackdrop then
@@ -217,7 +213,7 @@ end
 -- Enable/Disable shadows
 function mod:ToggleShadows()
 	local db = E.db.NutsAndBolts.LocationLite
-	
+
 	for _, frame in pairs(panels) do
 		if db.shadows then
 			frame.shadow:Show()
@@ -227,7 +223,7 @@ function mod:ToggleShadows()
 	end
 
 	local SPACING
-	
+
 	if db.shadows then
 		SPACING = 2
 	elseif db.asphyxiaStyle then
@@ -235,7 +231,7 @@ function mod:ToggleShadows()
 	else
 		SPACING = 1
 	end
-	
+
 	NB_XCoords:Point('RIGHT', NB_LocationLitePanel, 'LEFT', -SPACING, 0)
 	NB_YCoords:Point('LEFT', NB_LocationLitePanel, 'RIGHT', SPACING, 0)
 end
@@ -243,7 +239,7 @@ end
 function mod:ToggleAsphyxiaStyle()
 	local db = E.db.NutsAndBolts.LocationLite
 	local SPACING
-	
+
 	if db.asphyxiaStyle then
 		SPACING = -4
 		NB_XCoords:SetFrameLevel(NB_LocationLitePanel:GetFrameLevel()-1)
@@ -262,7 +258,7 @@ function mod:ToggleAsphyxiaStyle()
 	self:ToggleShadows()
 	self:PanelsHeight()
 	self:ToggleTransparency()
-	
+
 	NB_XCoords:Point('RIGHT', NB_LocationLitePanel, 'LEFT', -SPACING, 0)
 	NB_YCoords:Point('LEFT', NB_LocationLitePanel, 'RIGHT', SPACING, 0)
 end
@@ -280,7 +276,7 @@ function mod:UpdateCoords()
 		else
 			xt = x
 		end
-		
+
 		if y < 10 then
 			yt = "0"..y
 		else
@@ -296,7 +292,7 @@ function mod:UpdateLocation()
 	local subZoneText = GetMinimapZoneText() or ""
 	local zoneText = GetRealZoneText() or UNKNOWN;
 	local displayLine
-	
+
 	-- zone and subzone
 	if db.showBothZones then
 		if (subZoneText ~= "") and (subZoneText ~= zoneText) then
@@ -307,9 +303,9 @@ function mod:UpdateLocation()
 	else
 		displayLine = subZoneText
 	end
-	
+
 	NB_LocationLitePanel.Text:SetText(displayLine)
-	
+
 	if displayLine ~= "" then
 		if db.customColor == 1 then
 			NB_LocationLitePanel.Text:SetTextColor(AutoColoring())
@@ -319,10 +315,10 @@ function mod:UpdateLocation()
 			NB_LocationLitePanel.Text:SetTextColor(ENB:unpackColor(db.userColor))
 		end
 	end
-	
+
 	local fixedwidth = (db.width + 18)
 	local autowidth = (NB_LocationLitePanel.Text:GetStringWidth() + 18)
-	
+
 	if db.autoResize then
 		NB_LocationLitePanel:Width(autowidth)
 		NB_LocationLitePanel.Text:Width(autowidth)
@@ -365,7 +361,7 @@ function mod:ToggleCoordsColor()
 	local db = E.db.NutsAndBolts.LocationLite
 	if db.customCoordsColor == 1 then
 		NB_XCoords.Text:SetTextColor(ENB:unpackColor(db.userColor))
-		NB_YCoords.Text:SetTextColor(ENB:unpackColor(db.userColor))			
+		NB_YCoords.Text:SetTextColor(ENB:unpackColor(db.userColor))
 	elseif db.customCoordsColor == 2 then
 		NB_XCoords.Text:SetTextColor(classColor.r, classColor.g, classColor.b)
 		NB_YCoords.Text:SetTextColor(classColor.r, classColor.g, classColor.b)
@@ -382,7 +378,7 @@ function mod:ToggleBlizZoneText()
 	else
 		ZoneTextFrame:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 		ZoneTextFrame:RegisterEvent("ZONE_CHANGED_INDOORS")
-		ZoneTextFrame:RegisterEvent("ZONE_CHANGED")	
+		ZoneTextFrame:RegisterEvent("ZONE_CHANGED")
 	end
 end
 
@@ -411,7 +407,7 @@ function mod:StyleAndShadows()
 	if not ENB.BU then return end
 	for _, frame in pairs(panels) do
 		if frame then
-			frame:BuiStyle('Outside')
+			frame:Style('Outside')
 		end
 	end
 end
@@ -443,8 +439,6 @@ function mod:Initialize()
 
 	NB_LocationLitePanel:RegisterEvent("PLAYER_REGEN_DISABLED")
 	NB_LocationLitePanel:RegisterEvent("PLAYER_REGEN_ENABLED")
-	NB_LocationLitePanel:RegisterEvent("PET_BATTLE_CLOSE")
-	NB_LocationLitePanel:RegisterEvent("PET_BATTLE_OPENING_START")
 
 	self.initialized = true
 end

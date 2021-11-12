@@ -1,6 +1,3 @@
-1.04
-Remove databar colors - this is in core ElvUI now (thurin)
-
 1.03
 *Adopt ElvUI DataText changes
 
