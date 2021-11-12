@@ -1,3 +1,9 @@
+1.05 - Nov 13 2020
+*toc update for v1.14.1
+
+1.04
+Remove databar colors - this is in core ElvUI now (thurin)
+
 1.03
 *Adopt ElvUI DataText changes
 
